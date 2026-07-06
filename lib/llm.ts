@@ -1,0 +1,111 @@
+import { GoogleGenAI } from "@google/genai";
+import { SCALER_GROUNDING } from "./scaler-data";
+import type { LeadProfile, PdfContent } from "./types";
+
+const client = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+// Text generation model. Anthropic's Claude was the original choice (see PROMPTS.md /
+// README for the prompts, written model-agnostically) but was swapped to Gemini here
+// after the Anthropic account ran out of credit mid-build - documented in the README's
+// decisions section.
+const MODEL = "gemini-2.5-flash";
+
+function profileBlock(profile: LeadProfile) {
+  return `Name: ${profile.name}
+Current role: ${profile.role} at ${profile.company}
+Years of experience: ${profile.yoe}
+Stated intent (their own words): "${profile.intentQuote}"
+Background notes: ${profile.linkedinNotes}`;
+}
+
+export async function generateNudge(profile: LeadProfile, transcript: string): Promise<string> {
+  const prompt = `You are briefing a Business Development Associate (BDA) at Scaler moments before they call a lead.
+The BDA is reading this on their phone, standing up, about to dial. It must be short and scannable, not an essay.
+
+LEAD PROFILE:
+${profileBlock(profile)}
+
+${transcript ? `PRIOR CONTEXT / NOTES (if any prior interaction exists):\n${transcript}\n` : "No prior call has happened yet - this is pre-first-call prep based on profile only."}
+
+Write a WhatsApp message to the BDA with this exact structure (use WhatsApp-style formatting: *bold* with single
+asterisks for section labels only, "-" (hyphen) for bullet points - never "*" for bullets, since that collides
+with WhatsApp's bold syntax - short lines, emoji sparingly and only if it aids scannability):
+
+*Who they are:* one or two plain-English sentences on who this person is and what's likely driving them.
+
+*Likely persona:* a short label (e.g. "career-switcher from services", "skeptical senior engineer evaluating for gaps", "first-gen grad under family pressure") with a one-line "why".
+
+*Angles that'll land:* 2-3 bullets, each tied to something concrete about THIS person (their background, words, or situation) - not generic selling points.
+
+*Objections to expect:* 2-3 bullets, each an objection this specific lead is likely to raise, with a one-line handle for how to respond. If you're inferring rather than certain, say so briefly.
+
+*Opening hook:* one suggested first line for the BDA to open the call with, specific to this lead, so the first 10 seconds aren't generic.
+
+Rules:
+- Be explicit about what's inferred vs. what's a stated fact vs. what's missing - don't present a guess as certainty.
+- Write like a sharp teammate texting a heads-up, not a corporate memo. No filler, no "I hope this helps".
+- Do not fabricate any Scaler curriculum or pricing facts in this message - this message is about the LEAD, not about selling Scaler.
+- Never use the rupee sign glyph - write "Rs." instead if money comes up (e.g. "Rs. 3.5L").
+- Keep the whole message under 180 words.`;
+
+  const res = await client.models.generateContent({
+    model: MODEL,
+    contents: [{ role: "user", parts: [{ text: prompt }] }],
+  });
+
+  return (res.text ?? "").trim();
+}
+
+export async function extractQuestionsAndGenerateContent(
+  profile: LeadProfile,
+  transcript: string
+): Promise<PdfContent> {
+  const prompt = `You are preparing a personalised post-call PDF for a Scaler sales lead. The BDA already had a call
+with them (transcript below). Your job: extract their real open questions from the transcript, then answer each
+one specifically and honestly using ONLY the verified Scaler program facts provided. Then frame Scaler's fit
+around this specific person's goals - not generic marketing.
+
+LEAD PROFILE:
+${profileBlock(profile)}
+
+CALL TRANSCRIPT:
+${transcript}
+
+VERIFIED SCALER PROGRAM FACTS (only source of truth for any curriculum/pricing/outcomes claim):
+${SCALER_GROUNDING}
+
+Return ONLY valid JSON (no markdown fences, no commentary) matching exactly this shape:
+{
+  "leadName": string,
+  "personaSummary": string,  // 2-3 sentences: who they are, what's really driving them, tone should feel like it was written by someone who was on the call
+  "recommendedProgram": string,  // which Scaler program (from the facts above) fits best and one sentence why, tied to their profile
+  "openQuestions": [
+    { "question": string, "answer": string, "grounded": boolean }
+    // one entry per distinct question/concern the lead actually raised in the transcript, in the order raised.
+    // "answer" must be specific and must cite real facts from the grounding data when making a claim.
+    // if the transcript question is more specific than the grounding data covers, grounded=false and the answer
+    // should honestly say the BDA will confirm specifics rather than inventing a number.
+  ],
+  "roiReasoning": string,  // concrete reasoning tied to THIS lead's current package/situation, using only real fee/outcome data from the grounding facts. Show actual arithmetic where relevant (e.g. current CTC vs typical post-program CTC/hike) but only using the ranges given - do not invent a company-specific outcome that isn't in the data.
+  "trustBuilders": [string, string, string],  // 3 short concrete reasons this lead specifically should trust Scaler, tied to their situation (e.g. relevant alumni transition, relevant instructor background, relevant program feature)
+  "whatsNotCertain": [string],  // list anything in openQuestions or roiReasoning that was marked ungrounded / needs BDA follow-up. Empty array if nothing.
+  "coverMessage": string  // short (under 40 words), warm WhatsApp cover message from the BDA to send alongside the PDF link, personal and specific to this lead, inviting them to read it and take the entrance test next
+}
+
+Critical rules:
+- Never state a specific number, module name, instructor name, or outcome stat that is not in the grounding facts above.
+- Never use the rupee sign glyph anywhere, including inside quoted questions from the transcript (it doesn't
+  render in the PDF's font) - always write "Rs." instead, e.g. "Rs. 3,99,000".
+- The tone, structure emphasis, and framing must clearly differ based on who this lead is (e.g. a 9-YoE Google engineer needs a different pitch than a final-year student with family pressure) - do not produce generic middle-of-the-road content.
+- Output raw JSON only.`;
+
+  const res = await client.models.generateContent({
+    model: MODEL,
+    contents: [{ role: "user", parts: [{ text: prompt }] }],
+    config: { responseMimeType: "application/json" },
+  });
+
+  const text = (res.text ?? "").trim();
+  const jsonStr = text.replace(/^```(json)?/i, "").replace(/```$/, "").trim();
+  return JSON.parse(jsonStr) as PdfContent;
+}
