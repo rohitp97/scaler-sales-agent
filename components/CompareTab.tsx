@@ -49,10 +49,10 @@ export function CompareTab({ whatsappNumber }: { whatsappNumber: string }) {
     const demo = DEMO_PERSONAS[key];
     patch(key, { ...EMPTY_CARD, loading: true });
     try {
-      const [{ nudge }, { content }] = await Promise.all([
-        apiGenerateNudge(demo.profile, demo.transcript),
-        apiGeneratePdfContent(demo.profile, demo.transcript),
-      ]);
+      // Sequential, not Promise.all - Groq's free tier has a per-minute token budget that
+      // firing all 3 personas' calls at once (6 concurrent requests) blows through.
+      const { nudge } = await apiGenerateNudge(demo.profile, demo.transcript);
+      const { content } = await apiGeneratePdfContent(demo.profile, demo.transcript);
       const { url } = await apiRenderPdf(content);
       patch(key, { nudge, content, pdfUrl: url, loading: false });
     } catch (e) {
@@ -62,7 +62,9 @@ export function CompareTab({ whatsappNumber }: { whatsappNumber: string }) {
 
   const runAll = async () => {
     setRunningAll(true);
-    await Promise.all(KEYS.map(runOne));
+    for (const key of KEYS) {
+      await runOne(key);
+    }
     setRunningAll(false);
   };
 

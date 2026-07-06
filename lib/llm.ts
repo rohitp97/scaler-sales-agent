@@ -9,27 +9,45 @@ import type { LeadProfile, PdfContent } from "./types";
 const MODEL = "llama-3.3-70b-versatile";
 const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 
+// Groq's free tier caps at 12,000 tokens/minute - comfortably enough for one request at a
+// time, but the Compare-3-personas flow used to fire 6 calls concurrently and blew through
+// it. Retrying on 429 with the server's own suggested delay covers any remaining bursts
+// (e.g. two people testing at once).
 async function groqChat(prompt: string, jsonMode: boolean): Promise<string> {
-  const res = await fetch(GROQ_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
-    },
-    body: JSON.stringify({
-      model: MODEL,
-      messages: [{ role: "user", content: prompt }],
-      ...(jsonMode ? { response_format: { type: "json_object" } } : {}),
-    }),
-  });
+  const maxRetries = 3;
 
-  if (!res.ok) {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    const res = await fetch(GROQ_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        messages: [{ role: "user", content: prompt }],
+        ...(jsonMode ? { response_format: { type: "json_object" } } : {}),
+      }),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      return (data.choices?.[0]?.message?.content ?? "").trim();
+    }
+
     const body = await res.text();
+
+    if (res.status === 429 && attempt < maxRetries) {
+      const match = body.match(/try again in ([\d.]+)s/i);
+      const delaySeconds = match ? parseFloat(match[1]) : 2 * (attempt + 1);
+      await new Promise((r) => setTimeout(r, Math.ceil(delaySeconds * 1000) + 250));
+      continue;
+    }
+
     throw new Error(`Groq API error ${res.status}: ${body}`);
   }
 
-  const data = await res.json();
-  return (data.choices?.[0]?.message?.content ?? "").trim();
+  throw new Error("Groq API error: exhausted retries");
 }
 
 function profileBlock(profile: LeadProfile) {
