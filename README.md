@@ -7,6 +7,12 @@ An agent that supercharges two moments in the Scaler BDA sales flow, both delive
 
 Live app: https://scaler-sales-agent-zeta.vercel.app
 
+**Before testing:** this uses a Twilio WhatsApp *Sandbox* (not a production WhatsApp Business number), so any
+phone number you want to receive messages on — including the evaluator's own number when testing live — must
+first opt in once: send `join badly-active` to `+1 415 523 8886` from that WhatsApp number. Without this,
+Twilio will silently fail to deliver and the app will show a send error. The app's onboarding step also displays
+this instruction.
+
 > Note on README structure: the brief asks for "README three sections" without naming them. I've interpreted that as **What I built**, **Decisions & tradeoffs**, and **What I'd do with more time** — the ambiguity call is documented here per the brief's own instruction to "decide and document."
 
 ---

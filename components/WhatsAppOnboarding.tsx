@@ -32,7 +32,13 @@ export function WhatsAppOnboarding({
       </label>
       <p className="mt-1 text-xs text-neutral-500">
         Both the BDA nudge and the lead PDF will be sent here for this demo, in E.164 format
-        (e.g. +91XXXXXXXXXX). Must have joined the Twilio Sandbox first.
+        (e.g. +91XXXXXXXXXX).
+      </p>
+      <p className="mt-1 rounded-md bg-amber-50 px-2 py-1.5 text-xs text-amber-800">
+        One-time setup: from the WhatsApp on that number, send{" "}
+        <span className="font-mono font-semibold">join badly-active</span> to{" "}
+        <span className="font-mono font-semibold">+1 415 523 8886</span> first (Twilio Sandbox
+        opt-in - required before this number can receive anything below).
       </p>
       <input
         type="tel"
