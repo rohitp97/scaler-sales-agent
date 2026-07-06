@@ -102,6 +102,11 @@ Return ONLY valid JSON (no markdown fences, no commentary) matching exactly this
     // "answer" must be specific and must cite real facts from the grounding data when making a claim.
     // if the transcript question is more specific than the grounding data covers, grounded=false and the answer
     // should honestly say the BDA will confirm specifics rather than inventing a number.
+    // Length: each "answer" must be substantial enough to fill at least 4 wrapped lines in a PDF (roughly
+    // 70-90 words / 450-550 characters) - not padding or repetition, but genuine added context: cite the
+    // specific grounding facts involved, explain why they matter for THIS lead's situation, and connect back
+    // to what they said on the call. A one- or two-line answer is too thin - the lead should come away with
+    // real substance, not a one-liner.
   ],
   "roiReasoning": string,  // concrete reasoning tied to THIS lead's current package/situation, using only real fee/outcome data from the grounding facts. Show actual arithmetic where relevant (e.g. current CTC vs typical post-program CTC/hike) but only using the ranges given - do not invent a company-specific outcome that isn't in the data.
   "trustBuilders": [string, string, string],  // 3 short concrete reasons this lead specifically should trust Scaler, tied to their situation (e.g. relevant alumni transition, relevant instructor background, relevant program feature)
