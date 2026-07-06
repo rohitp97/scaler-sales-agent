@@ -32,7 +32,7 @@ npm install
 cp .env.local.example .env.local   # fill in your own keys
 npm run dev
 ```
-Required env vars: `ANTHROPIC_API_KEY`, `GEMINI_API_KEY`, `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_WHATSAPP_NUMBER`, `BLOB_READ_WRITE_TOKEN` (from a Vercel Blob store — needed even locally since Twilio must fetch the PDF from a public URL).
+Required env vars: `GEMINI_API_KEY`, `ASSEMBLYAI_API_KEY` (fallback transcription), `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_WHATSAPP_NUMBER`, `BLOB_READ_WRITE_TOKEN` (from a Vercel Blob store — needed even locally since Twilio must fetch the PDF from a public URL).
 
 ---
 
