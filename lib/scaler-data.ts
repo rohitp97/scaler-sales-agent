@@ -21,9 +21,12 @@ export const SCALER_GROUNDING = `
   Community of 37,000+ tech professionals; 1,00,000+ alumni network overall.
 - Fees: Starting ~Rs. 9,791/month, total ~Rs. 3,99,000. No-cost EMI, ~Rs. 20,000 upfront commitment. Lifetime access to
   curriculum, recordings, and future updates included (updated forever, no extra cost).
-- Outcomes: Career transition rate 96% (2024 assessed cohort). Median CTC post-program Rs. 16 LPA (up from Rs. 9 LPA
-  pre-Scaler). Median CTC hike 74%. Top 25% median CTC Rs. 25 LPA. Example transitions: Backend Engineer -> Computer
-  Scientist at Adobe; SWE -> Data Scientist at Fractal; SWE-2 -> MLOps Engineer-2 at NinjaCart.
+- Outcomes (verified directly from scaler.com homepage, "assessed 2024 Academy cohort"): Career transition rate
+  96%. Overall median CTC post-Scaler Rs. 25 LPA (up from Rs. 9 LPA pre-Scaler). Median CTC hike 150%. Top 25%
+  of the assessed cohort: median CTC Rs. 48 LPA. Verified named transitions (scaler.com/academy/): Shivam Prakash,
+  Backend Engineer at Ericsson -> Computer Scientist at Adobe (214% hike, 3 offers); Rajesh Somasundaram, Software
+  Engineer-II at HERE Technologies -> Machine Learning Ops Engineer-2 at NinjaCart; Sahil Bansal, now Data
+  Scientist at Fractal (prior role not stated on site - don't invent one).
 - Market context cited: 163% growth in AI-related job postings 2024->2025; "AI Engineer" is fastest-growing job
   title in the US (LinkedIn 2026 report); 729% YoY growth in forward-deployed engineer postings (2025->2026);
   $206K average AI engineer salary in 2025 (a $50,000 jump in a year) - this is a US figure, use with care for
@@ -52,10 +55,14 @@ export const SCALER_GROUNDING = `
   production failure simulation). 50+ hands-on projects on real business cases (Swiggy, Meesho, Myntra, etc.). AI
   mock interviews for data science formats. Lifetime access to recordings + curriculum updates.
 - Fees: Starting ~Rs. 9,791/month, total ~Rs. 3,99,000 (~$4,790 USD). No-cost EMI, ~Rs. 20,000 upfront.
-- Outcomes: 37,000+ alumni across tech, 900+ hiring partner companies. Median salary increase ~110% post-completion.
-  Average placement timeline within 3-6 months of completion. Notable outcomes: Adobe, Fractal, NinjaCart, Amazon,
-  Razorpay.
-- Instructors: former Facebook, Uber, LinkedIn, Airbnb professionals, 5-15+ YOE.
+- Outcomes: 37,000+ alumni across tech (also stated elsewhere on the page as 40,000+ peers - site has this minor
+  inconsistency, cite the lower/more-repeated 37,000+ figure), 900+ hiring partner companies. Median salary hike
+  ~110% post-completion, median CTC Rs. 18 LPA. Average placement timeline within 3-6 months. Verified named
+  transition (scaler.com/data-science-course/): Associate Analyst -> Associate at Razorpay.
+- Instructors: Saurabh Kango (Senior Manager, DS&A @Meesho) - Ex-LinkedIn Analytics Lead and Airbnb Data
+  Scientist, 10+ YOE. Thanish Batcha (Senior Data Scientist II @Poshmark) - built end-to-end ML at Amazon using
+  BERT and RoBERTa, 8+ YOE. Shared instructors also teaching on this track: Anshuman Singh (Facebook Messenger
+  founding team), Shubham Singh (Uber-scale products, ex-Dream11).
 - Differentiators: AI built into every module; portfolio-ready, interview-ready projects; lifelong curriculum
   updates at no extra cost; structured accountability (check-ins, mentorship, community) to prevent
   content-consumption-without-capability.
@@ -64,10 +71,11 @@ export const SCALER_GROUNDING = `
 - Duration: 12 months, full-time.
 - Audience: 0-3 yrs grads/junior devs/QA; 3-7 yrs SW/DevOps engineers; 7-12 yrs SREs/security/data engineers;
   12+ yrs cloud architects/eng leaders. No prior coding required for beginners.
-- Curriculum: Beginner Python (1mo - data types, control flow, functions, problem-solving), Linux Shell Scripting &
-  Computer Systems (2mo - file systems, processes, networking, Git), DevOps Tools (5mo total: Docker & Kubernetes
-  3mo - container orchestration, security, observability; CI/CD & Infra-as-Code 2mo - Jenkins, GitHub Actions,
-  Argo CD, Ansible). Specializations: MLOps and Cybersecurity.
+- Curriculum: Beginner Python (1mo/12 sessions - data types, control flow, functions, problem-solving), Linux Shell
+  Scripting & Computer Systems, split into two modules (1mo/11 sessions + 1mo/10 sessions - file systems, processes,
+  networking, Git), DevOps Tools 1: Docker & Kubernetes (3mo/33 sessions - container orchestration, security,
+  observability), DevOps Tools 2: CI/CD & Infra-as-Code (2mo/24 sessions - Jenkins, GitHub Actions, Argo CD,
+  Ansible). Specialisation in MLOps and Cybersecurity.
 - Teaching format: 1:1 mentor support from active industry pros. AI-assisted labs (config review, failure
   simulation). Project-based with AI-integrated capstones. AI mock interviews for platform engineer/SRE/cloud
   architect roles. Live sessions + lifetime recorded access.
@@ -76,7 +84,11 @@ export const SCALER_GROUNDING = `
   roles (Q1 2025); 25-35% salary premium for MLOps engineers over standard DevOps; <2% unemployment rate for
   DevOps engineers. Emerging roles highlighted: AIOps Systems Architect, AI Gateway Engineer, Agentic Workflow
   Designer, RAG Engineer, AI-Enabled Platform Engineer/SRE.
-- Instructors: from Facebook, Microsoft, Oracle, Eventbrite, AWS-certified, 4-20+ YOE.
+- Instructors (scaler.com/devops-course/): Anshuman Singh (Co-Founder, shared across programs) - 2x ACM ICPC
+  World Finalist, built Facebook Messenger, 15+ YOE. Vilas Varghese (Senior DevOps Consultant) - BITS Pilani
+  alumnus, 4 AWS certifications, 20+ YOE. Rajat Bansal (Senior SRE at Eventbrite), 5+ YOE. Govind Kumar (Cloud
+  Architect) - 11 AWS certifications, 12+ YOE. Do not attribute Microsoft/Oracle background to DevOps instructors
+  specifically - that's Academy-track only (Shivank Agarwal).
 - Differentiators: AI built into every module; production-first tool teaching; 5 capstone projects with AI
   components (observability, security, FinOps, GenAI, ML platforms); proprietary coding/interview-prep tools;
   37,000+ alumni network; MLOps & Cybersecurity specialization tracks.
