@@ -8,7 +8,7 @@ const client = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 // README for the prompts, written model-agnostically) but was swapped to Gemini here
 // after the Anthropic account ran out of credit mid-build - documented in the README's
 // decisions section.
-const MODEL = "gemini-2.5-flash";
+const MODEL = "gemini-2.5-flash-lite";
 
 function profileBlock(profile: LeadProfile) {
   return `Name: ${profile.name}
