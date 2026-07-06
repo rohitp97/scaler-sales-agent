@@ -42,8 +42,12 @@ npm install
 cp .env.local.example .env.local   # fill in your own keys
 npm run dev
 ```
-Env vars: `GEMINI_API_KEY`, `ASSEMBLYAI_API_KEY` (fallback transcription), `TWILIO_ACCOUNT_SID`,
-`TWILIO_AUTH_TOKEN`, `TWILIO_WHATSAPP_NUMBER`, `BLOB_READ_WRITE_TOKEN` (Vercel Blob — Twilio needs a public URL
-to fetch the PDF from, even in dev).
+Env vars: `GROQ_API_KEY` (text generation), `GEMINI_API_KEY` (audio transcription), `ASSEMBLYAI_API_KEY`
+(transcription fallback), `TWILIO_ACCOUNT_SID`, `TWILIO_AUTH_TOKEN`, `TWILIO_WHATSAPP_NUMBER`,
+`BLOB_READ_WRITE_TOKEN` (Vercel Blob — Twilio needs a public URL to fetch the PDF from, even in dev).
+
+*Model note:* text generation moved Claude → Gemini → Groq (`llama-3.3-70b-versatile`) over the course of the
+build — Anthropic credit ran out, then Gemini's free tier hit its daily quota and separately returned a
+persistent 503 during testing. Prompts in `PROMPTS.md` are model-agnostic and unaffected by the swap.
 
 Full prompts: [`PROMPTS.md`](./PROMPTS.md). Three questions for the first 30 minutes: see the submission email.

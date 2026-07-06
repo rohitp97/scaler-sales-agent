@@ -2,12 +2,14 @@
 
 All prompts are also live in the code: [`lib/llm.ts`](./lib/llm.ts) and [`lib/gemini.ts`](./lib/gemini.ts). Copied verbatim here (with the templated variables described) for submission.
 
-Model used for all text generation and audio transcription: **Gemini 2.5 Flash** (native multimodal audio input
-means transcription and text generation both run on the same model family, one fewer vendor integration).
-AssemblyAI is wired in as an automatic fallback if the Gemini audio call fails (see `lib/assemblyai.ts`).
+Model used for text generation (nudge + PDF content): **Groq — `llama-3.3-70b-versatile`**. Model used for audio
+transcription: **Gemini 2.5 Flash** (native multimodal audio input), with **AssemblyAI** wired in as an automatic
+fallback if that call fails (see `lib/assemblyai.ts`).
 
-> Originally built against Claude (`claude-sonnet-5`) - the prompts below were written model-agnostically and
-> ported over unchanged when the Anthropic account ran out of credit mid-build. See README decisions section.
+> Originally built against Claude (`claude-sonnet-5`), then moved to Gemini when the Anthropic account ran out of
+> credit, then moved to Groq when Gemini's free tier hit its daily quota and separately returned a persistent 503
+> mid-testing. The prompts below are model-agnostic and were ported unchanged across all three. See the README's
+> decisions section for the full story.
 
 ---
 
@@ -90,7 +92,7 @@ Critical rules:
 - Output raw JSON only.
 ```
 
-Sent with `responseMimeType: "application/json"` (Gemini's structured-output mode) so parsing is reliable without markdown-fence stripping in the common case.
+Sent with `response_format: { type: "json_object" }` (Groq's structured-output mode) so parsing is reliable without markdown-fence stripping in the common case.
 
 ---
 
