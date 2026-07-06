@@ -34,16 +34,19 @@ export default function Home() {
 
   return (
     <div className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
-      <header className="mb-6">
-        <p className="text-xs font-semibold uppercase tracking-wider text-blue-600">
-          Scaler · Sales Copilot
-        </p>
-        <h1 className="mt-1 text-2xl font-bold text-neutral-900">
-          BDA pre-call nudge + post-call PDF agent
-        </h1>
-        <p className="mt-1 text-sm text-neutral-500">
-          Prep the BDA before the call. Build trust with the lead after it. Both land on WhatsApp.
-        </p>
+      <header className="mb-6 flex items-start justify-between gap-4">
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-wider text-[#0041CA]">
+            Sales Copilot
+          </p>
+          <h1 className="mt-1 text-2xl font-bold text-neutral-900">
+            BDA pre-call nudge + post-call PDF agent
+          </h1>
+          <p className="mt-1 text-sm text-neutral-500">
+            Prep the BDA before the call. Build trust with the lead after it. Both land on WhatsApp.
+          </p>
+        </div>
+        <img src="/scaler-logo.svg" alt="Scaler" className="mt-1 h-6 w-auto shrink-0" />
       </header>
 
       <div className="mb-6">
@@ -55,7 +58,7 @@ export default function Home() {
           onClick={() => setTab("workbench")}
           className={`px-3 py-2 text-sm font-medium ${
             tab === "workbench"
-              ? "border-b-2 border-blue-600 text-blue-600"
+              ? "border-b-2 border-[#0041CA] text-[#0041CA]"
               : "text-neutral-500 hover:text-neutral-800"
           }`}
         >
@@ -65,7 +68,7 @@ export default function Home() {
           onClick={() => setTab("compare")}
           className={`px-3 py-2 text-sm font-medium ${
             tab === "compare"
-              ? "border-b-2 border-blue-600 text-blue-600"
+              ? "border-b-2 border-[#0041CA] text-[#0041CA]"
               : "text-neutral-500 hover:text-neutral-800"
           }`}
         >

@@ -110,7 +110,7 @@ export function PdfPanel({ profile, transcript, whatsappNumber }: Props) {
                       updateField("openQuestions", next);
                     }}
                     rows={2}
-                    className="mt-1 w-full rounded-md border border-neutral-300 px-2 py-1 text-xs focus:border-blue-500 focus:outline-none"
+                    className="mt-1 w-full rounded-md border border-neutral-300 px-2 py-1 text-xs focus:border-[#0041CA] focus:outline-none"
                   />
                   {!q.grounded && (
                     <span className="text-[10px] text-amber-600">not fully grounded - BDA to confirm</span>
@@ -125,7 +125,7 @@ export function PdfPanel({ profile, transcript, whatsappNumber }: Props) {
           <button
             onClick={renderPdf}
             disabled={stage === "rendering"}
-            className="rounded-md bg-blue-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-blue-700 disabled:opacity-40"
+            className="rounded-md bg-[#0041CA] px-3 py-1.5 text-xs font-medium text-white hover:bg-[#00339e] disabled:opacity-40"
           >
             {stage === "rendering" ? "Rendering PDF..." : "Render PDF preview"}
           </button>
@@ -193,13 +193,13 @@ function Field({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           rows={3}
-          className="mt-1 w-full rounded-md border border-neutral-300 px-2 py-1.5 text-xs focus:border-blue-500 focus:outline-none"
+          className="mt-1 w-full rounded-md border border-neutral-300 px-2 py-1.5 text-xs focus:border-[#0041CA] focus:outline-none"
         />
       ) : (
         <input
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="mt-1 w-full rounded-md border border-neutral-300 px-2 py-1.5 text-xs focus:border-blue-500 focus:outline-none"
+          className="mt-1 w-full rounded-md border border-neutral-300 px-2 py-1.5 text-xs focus:border-[#0041CA] focus:outline-none"
         />
       )}
     </div>

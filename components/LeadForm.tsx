@@ -60,7 +60,7 @@ export function LeadForm({
           })
         }
         placeholder={placeholder}
-        className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
+        className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-1.5 text-sm focus:border-[#0041CA] focus:outline-none"
       />
     </div>
   );
@@ -114,7 +114,7 @@ export function LeadForm({
           value={profile.intentQuote}
           onChange={(e) => setProfile({ ...profile, intentQuote: e.target.value })}
           placeholder="e.g. want to switch to a product company..."
-          className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
+          className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-1.5 text-sm focus:border-[#0041CA] focus:outline-none"
         />
       </div>
       <div className="mt-3">
@@ -125,7 +125,7 @@ export function LeadForm({
           value={profile.linkedinNotes}
           onChange={(e) => setProfile({ ...profile, linkedinNotes: e.target.value })}
           placeholder="e.g. B.Tech CSE, 4 yrs at TCS on banking clients..."
-          className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none"
+          className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-1.5 text-sm focus:border-[#0041CA] focus:outline-none"
         />
       </div>
 
@@ -135,7 +135,7 @@ export function LeadForm({
             onClick={() => setInputMode("structured")}
             className={`rounded-md px-3 py-1 text-xs font-medium ${
               inputMode === "structured"
-                ? "bg-blue-600 text-white"
+                ? "bg-[#0041CA] text-white"
                 : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
             }`}
           >
@@ -145,7 +145,7 @@ export function LeadForm({
             onClick={() => setInputMode("audio")}
             className={`rounded-md px-3 py-1 text-xs font-medium ${
               inputMode === "audio"
-                ? "bg-blue-600 text-white"
+                ? "bg-[#0041CA] text-white"
                 : "bg-neutral-100 text-neutral-600 hover:bg-neutral-200"
             }`}
           >
@@ -161,7 +161,7 @@ export function LeadForm({
               onChange={(e) => setTranscript(e.target.value)}
               rows={8}
               placeholder="Paste the call transcript here (BDA: ... / Lead: ...)"
-              className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+              className="mt-1 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-[#0041CA] focus:outline-none"
             />
           </div>
         ) : (

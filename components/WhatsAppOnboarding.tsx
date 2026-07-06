@@ -45,7 +45,7 @@ export function WhatsAppOnboarding({
         value={number}
         onChange={(e) => onChange(e.target.value)}
         placeholder="+91XXXXXXXXXX"
-        className="mt-2 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-blue-500 focus:outline-none"
+        className="mt-2 w-full rounded-md border border-neutral-300 px-3 py-2 text-sm focus:border-[#0041CA] focus:outline-none"
       />
     </div>
   );
