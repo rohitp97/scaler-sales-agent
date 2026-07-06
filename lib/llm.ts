@@ -1,14 +1,36 @@
-import { GoogleGenAI } from "@google/genai";
 import { SCALER_GROUNDING } from "./scaler-data";
 import type { LeadProfile, PdfContent } from "./types";
 
-const client = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+// Text generation via Groq's OpenAI-compatible chat completions API. Originally built
+// against Claude (see PROMPTS.md - prompts are model-agnostic), moved to Gemini when the
+// Anthropic account ran out of credit, then moved here after Gemini's free tier hit its
+// daily request quota and, separately, returned a transient 503 "model overloaded" - see
+// README decisions section for the full story.
+const MODEL = "llama-3.3-70b-versatile";
+const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
 
-// Text generation model. Anthropic's Claude was the original choice (see PROMPTS.md /
-// README for the prompts, written model-agnostically) but was swapped to Gemini here
-// after the Anthropic account ran out of credit mid-build - documented in the README's
-// decisions section.
-const MODEL = "gemini-2.5-flash-lite";
+async function groqChat(prompt: string, jsonMode: boolean): Promise<string> {
+  const res = await fetch(GROQ_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${process.env.GROQ_API_KEY}`,
+    },
+    body: JSON.stringify({
+      model: MODEL,
+      messages: [{ role: "user", content: prompt }],
+      ...(jsonMode ? { response_format: { type: "json_object" } } : {}),
+    }),
+  });
+
+  if (!res.ok) {
+    const body = await res.text();
+    throw new Error(`Groq API error ${res.status}: ${body}`);
+  }
+
+  const data = await res.json();
+  return (data.choices?.[0]?.message?.content ?? "").trim();
+}
 
 function profileBlock(profile: LeadProfile) {
   return `Name: ${profile.name}
@@ -48,12 +70,7 @@ Rules:
 - Never use the rupee sign glyph - write "Rs." instead if money comes up (e.g. "Rs. 3.5L").
 - Keep the whole message under 180 words.`;
 
-  const res = await client.models.generateContent({
-    model: MODEL,
-    contents: [{ role: "user", parts: [{ text: prompt }] }],
-  });
-
-  return (res.text ?? "").trim();
+  return groqChat(prompt, false);
 }
 
 export async function extractQuestionsAndGenerateContent(
@@ -99,13 +116,7 @@ Critical rules:
 - The tone, structure emphasis, and framing must clearly differ based on who this lead is (e.g. a 9-YoE Google engineer needs a different pitch than a final-year student with family pressure) - do not produce generic middle-of-the-road content.
 - Output raw JSON only.`;
 
-  const res = await client.models.generateContent({
-    model: MODEL,
-    contents: [{ role: "user", parts: [{ text: prompt }] }],
-    config: { responseMimeType: "application/json" },
-  });
-
-  const text = (res.text ?? "").trim();
+  const text = await groqChat(prompt, true);
   const jsonStr = text.replace(/^```(json)?/i, "").replace(/```$/, "").trim();
   return JSON.parse(jsonStr) as PdfContent;
 }
