@@ -113,7 +113,15 @@ Return ONLY valid JSON (no markdown fences, no commentary) matching exactly this
 {
   "leadName": string,
   "personaSummary": string,  // 2-3 sentences: who they are, what's really driving them, tone should feel like it was written by someone who was on the call
-  "recommendedProgram": string,  // which Scaler program (from the facts above) fits best and one sentence why, tied to their profile
+  "recommendedProgram": string,  // Before writing this, privately compare this lead's YOE, coding background, and
+  // stated goal against ALL the programs in the grounding facts (Academy, Data Science & ML, DevOps/Cloud/AI
+  // Platform Engineering, Advanced AI/ML) - do not default to Academy as a safe catch-all. Two leads with
+  // meaningfully different YOE or backgrounds should not mechanically land on the same program with the same
+  // justification - if you find yourself writing near-identical reasoning for very different profiles, re-examine
+  // it. BUT the text you actually output here is lead-facing polished copy, not your reasoning trace: state the
+  // recommended program and tie it to specifics of THEIR profile/goals in 1-2 confident sentences. Never
+  // reference alternatives you considered or ruled out ("not Data Science & ML because...") - the lead should
+  // never see the comparison happen, only read a recommendation that's obviously written for them specifically.
   "openQuestions": [
     { "question": string, "answer": string, "grounded": boolean }
     // one entry per distinct question/concern the lead actually raised in the transcript, in the order raised.
@@ -126,7 +134,17 @@ Return ONLY valid JSON (no markdown fences, no commentary) matching exactly this
     // to what they said on the call. A one- or two-line answer is too thin - the lead should come away with
     // real substance, not a one-liner.
   ],
-  "roiReasoning": string,  // concrete reasoning tied to THIS lead's current package/situation, using only real fee/outcome data from the grounding facts. Show actual arithmetic where relevant (e.g. current CTC vs typical post-program CTC/hike) but only using the ranges given - do not invent a company-specific outcome that isn't in the data.
+  "roiReasoning": string,  // Concrete reasoning tied to THIS lead's situation, using only real fee/outcome data
+  // from the grounding facts. CRITICAL: only use the lead's current CTC/package in the arithmetic if they
+  // actually stated it themselves in the transcript or profile - never invent or guess a number for what someone
+  // in their role "probably" earns. If no current CTC was stated (e.g. a fresher, or nobody mentioned salary),
+  // reason about the program's outcomes on their own terms instead (e.g. absolute post-program CTC range for
+  // their career stage) rather than fabricating a baseline to subtract from.
+  // ALSO CRITICAL: if this lead's seniority suggests they may already earn at or above the program's
+  // post-program median (e.g. a senior engineer already several years into a top-tier company), do not force a
+  // generic salary-hike pitch that wouldn't actually be a hike for them - say that honestly instead, and pivot
+  // to what the program actually offers someone already at their level (depth, specialisation, or role-transition
+  // credibility), not an unconvincing salary multiplier.
   "trustBuilders": [string, string, string],  // 3 short concrete reasons this lead specifically should trust Scaler, tied to their situation (e.g. relevant alumni transition, relevant instructor background, relevant program feature)
   "whatsNotCertain": [string],  // list anything in openQuestions or roiReasoning that was marked ungrounded / needs BDA follow-up. Empty array if nothing.
   "coverMessage": string  // short (under 40 words), warm WhatsApp cover message from the BDA to send alongside the PDF link, personal and specific to this lead, inviting them to read it and take the entrance test next
