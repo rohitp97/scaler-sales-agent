@@ -26,13 +26,12 @@ wrong because the grounding file itself was never checked against raw HTML.
 
 ## 3. Scale plan
 
-Two things break well before 100k/month. First, WhatsApp delivery: Twilio's Sandbox is single-number test
+Two things break before 100k/month. First, WhatsApp delivery: Twilio's Sandbox is single-number test
 infrastructure — real volume needs an approved WhatsApp Business API number with pre-approved templates and
-tier-based throughput caps (new numbers start around 250 conversations/day), so messaging infrastructure, not
-compute, is the actual ceiling. Second, the approval gate: a BDA clicking Approve/Edit/Skip on every PDF is
-fine at 1/day but doesn't scale linearly with lead volume — at 100k/month, human review capacity becomes the
-bottleneck, not generation. The gate would need to shift from 100%-manual to spot-checking above a trust
-threshold, with full audit logging.
+tier-based throughput caps, so messaging infrastructure, not compute, is the ceiling. Second, lead handling:
+there's no database today - leads exist only in whatever's pasted into the form. At volume, leads need to land
+in a database at signup, with BDAs logging into this same portal to see only their assigned leads - tagged new,
+contacted, dropped-off, test-taken, or converted - so each gets served differently instead of re-entered by hand.
 
 ---
 
